@@ -192,8 +192,8 @@ footer{text-align:center;padding:34px 0 0;font-family:'Great Vibes',cursive;colo
       <div class="count" id="count">
         <div><b id="cd-d">5</b><span>дней</span></div>
         <div><b id="cd-h">04</b><span>часов</span></div>
-        <div><b id="cd-m">57</b><span>минут</span></div>
-        <div><b id="cd-s">16</b><span>секунд</span></div>
+        <div><b id="cd-m">53</b><span>минут</span></div>
+        <div><b id="cd-s">05</b><span>секунд</span></div>
       </div>
     </section>
 
@@ -340,7 +340,8 @@ const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
 // ---------- music (Happy Birthday, мягкое пианино + аккорды) ----------
-let ctx = null, playing = false, timer = null, out = null;
+// Мелодия заранее рендерится в WAV и играет через <audio>:
+// так она звучит даже при беззвучном режиме на iPhone (как видео/музыка), и на Android тоже.
 const F = n => 440 * Math.pow(2, (n - 69) / 12);          // midi -> Hz
 const M = {G4:67,A4:69,B4:71,C5:72,D5:74,E5:76,F5:77,G5:79};
 const CH = {C:[48,55,60,64], G:[43,55,59,62], F:[41,53,57,60], G7:[43,53,59,62]};
@@ -350,63 +351,108 @@ const SONG = [["G4",.75],["G4",.25],["A4",1,"C"],["G4",1],["C5",1],["B4",2,"G"],
               ["G4",.75],["G4",.25],["G5",1,"C"],["E5",1],["C5",1],["B4",1,"F"],["A4",2],["",1],
               ["F5",.75],["F5",.25],["E5",1,"C"],["C5",1],["D5",1,"G7"],["C5",3,"C"]];
 const BEAT = .52;
-function initAudio(){
-  ctx = new (window.AudioContext || window.webkitAudioContext)();
-  out = ctx.createGain(); out.gain.value = .55;
-  const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 3200;
-  // мягкая реверберация
-  const len = ctx.sampleRate * 2.6, ir = ctx.createBuffer(2, len, ctx.sampleRate);
-  for (let c = 0; c < 2; c++){ const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 3); }
-  const rev = ctx.createConvolver(); rev.buffer = ir;
-  const wet = ctx.createGain(); wet.gain.value = .35;
-  out.connect(lp); lp.connect(ctx.destination); lp.connect(rev); rev.connect(wet); wet.connect(ctx.destination);
+function buildGraph(c){
+  const out = c.createGain(); out.gain.value = .6;
+  const lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 3200;
+  const len = Math.floor(c.sampleRate * 2.6), ir = c.createBuffer(2, len, c.sampleRate);
+  for (let ch = 0; ch < 2; ch++){ const d = ir.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 3); }
+  const rev = c.createConvolver(); rev.buffer = ir;
+  const wet = c.createGain(); wet.gain.value = .35;
+  out.connect(lp); lp.connect(c.destination); lp.connect(rev); rev.connect(wet); wet.connect(c.destination);
+  return out;
 }
-function piano(midi, t, dur, vol){
+function piano(c, out, midi, t, dur, vol){
   const f = F(midi);
   [[1,"triangle",1],[2,"sine",.25],[3,"sine",.08]].forEach(([mul,type,v]) => {
-    const o = ctx.createOscillator(), g = ctx.createGain();
+    const o = c.createOscillator(), g = c.createGain();
     o.type = type; o.frequency.value = f*mul; o.detune.value = (Math.random()-.5)*4;
     const end = t + Math.max(dur, .4) + 1.2;
     g.gain.setValueAtTime(0, t);
     g.gain.linearRampToValueAtTime(vol*v, t + .012);
     g.gain.exponentialRampToValueAtTime(vol*v*.35, t + .35);
     g.gain.exponentialRampToValueAtTime(.0001, end);
-    o.connect(g).connect(out); o.start(t); o.stop(end + .05);
+    o.connect(g); g.connect(out); o.start(t); o.stop(end + .05);
   });
 }
-function chord(name, t, dur){
-  CH[name].forEach((m, i) => piano(m, t + i*.035, dur, i === 0 ? .16 : .09));   // лёгкое арпеджио
-}
-function playSong(){
-  let t = ctx.currentTime + .15;
-  SONG.forEach(([n, d, c], i) => {
-    if (c){ let span = 0; for (let j = i; j < SONG.length; j++){ if (j > i && SONG[j][2]) break; span += SONG[j][1]; } chord(c, t, span*BEAT); }
-    if (n) piano(M[n], t, d*BEAT, .30);
+function scheduleSong(c, out, t){
+  SONG.forEach(([n, d, ch], i) => {
+    if (ch){
+      let span = 0; for (let j = i; j < SONG.length; j++){ if (j > i && SONG[j][2]) break; span += SONG[j][1]; }
+      CH[ch].forEach((m, k) => piano(c, out, m, t + k*.035, span*BEAT, k === 0 ? .16 : .09));
+    }
+    if (n) piano(c, out, M[n], t, d*BEAT, .30);
     t += d*BEAT;
   });
-  const len = (t - ctx.currentTime + 1.5) * 1000;
-  timer = setTimeout(() => { if (playing) playSong(); }, len);
+  return t;
 }
-function startMusic(){
+const SONG_SEC = SONG.reduce((a, x) => a + x[1], 0) * BEAT + 1.9;
+
+function toWav(buf){
+  const ch = buf.numberOfChannels, sr = buf.sampleRate, n = buf.length;
+  const ab = new ArrayBuffer(44 + n*ch*2), v = new DataView(ab);
+  const w = (o, str) => { for (let i = 0; i < str.length; i++) v.setUint8(o+i, str.charCodeAt(i)); };
+  w(0,"RIFF"); v.setUint32(4, 36 + n*ch*2, true); w(8,"WAVE"); w(12,"fmt ");
+  v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,ch,true); v.setUint32(24,sr,true);
+  v.setUint32(28,sr*ch*2,true); v.setUint16(32,ch*2,true); v.setUint16(34,16,true); w(36,"data"); v.setUint32(40,n*ch*2,true);
+  const data = []; for (let c = 0; c < ch; c++) data.push(buf.getChannelData(c));
+  let o = 44;
+  for (let i = 0; i < n; i++) for (let c = 0; c < ch; c++){ const x = Math.max(-1, Math.min(1, data[c][i])); v.setInt16(o, x < 0 ? x*0x8000 : x*0x7FFF, true); o += 2; }
+  return new Blob([ab], {type: "audio/wav"});
+}
+
+const audioEl = new Audio();
+audioEl.loop = true; audioEl.preload = "auto"; audioEl.setAttribute("playsinline", ""); audioEl.volume = 1;
+let audioReady = false, playing = false;
+let live = null, liveTimer = null;            // запасной вариант, если файл ещё не готов
+
+(async function renderSong(){
   try{
-    if (!ctx) initAudio();
-    ctx.resume(); playing = true; playSong();
-    $("music").classList.add("playing");
-    $("music").innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+    const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    const SR = 44100, c = new OAC(2, Math.ceil(SONG_SEC * SR), SR);
+    scheduleSong(c, buildGraph(c), .15);
+    const buf = await c.startRendering();
+    audioEl.src = URL.createObjectURL(toWav(buf));
+    audioEl.load();
+    audioReady = true;
+  }catch(e){}
+})();
+
+function setUI(on){
+  $("music").classList.toggle("playing", on);
+  $("music").innerHTML = on
+    ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+}
+function playLive(){
+  try{
+    live = live || new (window.AudioContext || window.webkitAudioContext)();
+    live.resume();
+    const out = buildGraph(live);
+    const loop = () => { if (!playing || audioReady) return; const end = scheduleSong(live, out, live.currentTime + .1); liveTimer = setTimeout(loop, (end - live.currentTime + 1.5)*1000); };
+    loop();
   }catch(e){}
 }
-function stopMusic(){
-  playing = false; clearTimeout(timer);
-  if (ctx) ctx.suspend();
-  $("music").classList.remove("playing");
-  $("music").innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+function startMusic(){
+  try{ if (navigator.audioSession) navigator.audioSession.type = "playback"; }catch(e){}
+  playing = true; setUI(true);
+  if (audioReady){
+    const pr = audioEl.play();
+    if (pr && pr.catch) pr.catch(() => { if (!live) playLive(); });
+  } else {
+    playLive();
+    // как только файл готов — переключаемся на него (он не глушится беззвучным режимом)
+    const wait = setInterval(() => {
+      if (!playing){ clearInterval(wait); return; }
+      if (audioReady){ clearInterval(wait); audioEl.play().then(() => { if (live) live.suspend(); }).catch(()=>{}); }
+    }, 300);
+  }
 }
-$("music").onclick = () => {
-  if (playing) { stopMusic(); return; }
-  if (ctx && ctx.state === "suspended" && timer) { playing = true; ctx.resume(); playSong(); $("music").classList.add("playing");
-    $("music").innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'; return; }
-  startMusic();
-};
+function stopMusic(){
+  playing = false; setUI(false);
+  audioEl.pause();
+  clearTimeout(liveTimer); if (live) live.suspend();
+}
+$("music").onclick = () => { playing ? stopMusic() : startMusic(); };
 
 // ---------- envelope ----------
 $("openChk").checked = false;
