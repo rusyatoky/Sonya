@@ -66,9 +66,11 @@ section+section{border-top:1px solid #efe2d8}
 .sub{font-family:'Cormorant Garamond',serif;font-size:21px;font-style:italic;color:var(--ink)}
 .age{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:120px;line-height:1;color:var(--wine);margin:18px 0 6px;position:relative;display:inline-block}
 .age small{position:absolute;right:-30px;top:18px;font-size:22px;font-weight:500;font-style:italic}
-.dateRow{display:flex;align-items:center;justify-content:center;gap:16px;font-family:'Cormorant Garamond',serif;color:var(--ink);margin-top:6px}
-.dateRow .side{font-size:15px;letter-spacing:.25em;text-transform:uppercase;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 4px;min-width:96px}
-.dateRow .big{font-size:52px;font-weight:600;line-height:1}
+.dateRow{display:grid;grid-template-columns:1fr 104px 1fr;align-items:center;max-width:320px;margin:8px auto 0;font-family:'Cormorant Garamond',serif;color:var(--ink)}
+.dateRow .side{font-size:14px;letter-spacing:.3em;text-transform:uppercase;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:9px 0 8px;text-align:center}
+.dateRow .big{font-size:86px;font-weight:600;line-height:1;text-align:center;color:var(--wine);font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1}
+.age,.count b,.cal{font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1}
+.dateYear{font-family:'Cormorant Garamond',serif;letter-spacing:.5em;font-size:15px;color:var(--muted);margin-top:10px;padding-left:.5em}
 
 .music{position:absolute;top:16px;right:16px;width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
   background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(0,0,0,.25)}
@@ -122,20 +124,15 @@ h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;margin-
 .rsvp{background:var(--wine);color:var(--cream)}
 .rsvp h2{color:#fff}
 .rsvp p{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--rose);margin-top:6px}
-.rsvp input{width:100%;max-width:320px;margin:22px auto 0;display:block;padding:14px 18px;border-radius:40px;border:1px solid rgba(255,255,255,.35);
-  background:rgba(255,255,255,.08);color:#fff;font-family:'Montserrat',sans-serif;font-size:15px;outline:none;text-align:center}
-.rsvp input::placeholder{color:rgba(255,255,255,.55)}
-.choice{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.choice button{padding:13px 20px;border-radius:40px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;font-family:'Montserrat',sans-serif;font-size:13px;cursor:pointer;transition:.2s}
-.choice button.on{background:var(--cream);color:var(--wine);border-color:var(--cream)}
-.rsvp .btn{border-color:var(--cream);color:var(--wine);background:var(--cream)}
-.js .rsvp .btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
-.note{font-size:12px!important;font-family:'Montserrat',sans-serif!important;color:rgba(255,255,255,.6)!important;margin-top:14px!important}
-.thanks{display:none;margin-top:18px;font-family:'Great Vibes',cursive;font-size:34px;color:#fff}
+.rsvp-btns{display:flex;flex-direction:column;gap:12px;align-items:center;margin-top:24px}
+.rsvp .btn{margin:0;min-width:240px;justify-content:center;border-color:var(--cream);color:var(--wine);background:var(--cream);font-size:13px}
+.rsvp .btn.ghost{background:transparent;color:var(--cream)}
+.rsvp .btn.ghost:hover{background:rgba(255,255,255,.1)}
+.note{font-size:12px!important;font-family:'Montserrat',sans-serif!important;color:rgba(255,255,255,.6)!important;margin-top:16px!important}
 
 footer{text-align:center;padding:34px 0 0;font-family:'Great Vibes',cursive;color:var(--rose);font-size:30px;position:relative;z-index:1}
 .divider{font-size:14px;color:var(--gold);letter-spacing:10px;margin:24px 0 0}
-.nojs .music,.nojs .music-hint,.nojs .count,.nojs #guest,.nojs .choice,.nojs #sendNote{display:none}
+.nojs .music,.nojs .music-hint,.nojs .count{display:none}
 </style>
 </head>
 <body>
@@ -175,8 +172,9 @@ footer{text-align:center;padding:34px 0 0;font-family:'Great Vibes',cursive;colo
       <div class="dateRow">
         <div class="side" id="weekday">среда</div>
         <div class="big" id="dayNum">4</div>
-        <div class="side" id="monthYear">ноября 2026</div>
+        <div class="side" id="monthYear">ноября</div>
       </div>
+      <div class="dateYear" id="dateYear">2026</div>
       <div class="sub" style="margin-top:16px" id="timeLine">начало в 19:00</div>
     </section>
 
@@ -193,9 +191,9 @@ footer{text-align:center;padding:34px 0 0;font-family:'Great Vibes',cursive;colo
       <div class="cal" id="cal"><div class="h">пн</div><div class="h">вт</div><div class="h">ср</div><div class="h">чт</div><div class="h">пт</div><div class="h">сб</div><div class="h">вс</div><div></div><div></div><div></div><div></div><div></div><div></div><div class="d we">1</div><div class="d">2</div><div class="d">3</div><div class="d the">4</div><div class="d">5</div><div class="d">6</div><div class="d we">7</div><div class="d we">8</div><div class="d">9</div><div class="d">10</div><div class="d">11</div><div class="d">12</div><div class="d">13</div><div class="d we">14</div><div class="d we">15</div><div class="d">16</div><div class="d">17</div><div class="d">18</div><div class="d">19</div><div class="d">20</div><div class="d we">21</div><div class="d we">22</div><div class="d">23</div><div class="d">24</div><div class="d">25</div><div class="d">26</div><div class="d">27</div><div class="d we">28</div><div class="d we">29</div><div class="d">30</div></div>
       <div class="count" id="count">
         <div><b id="cd-d">5</b><span>дней</span></div>
-        <div><b id="cd-h">20</b><span>часов</span></div>
-        <div><b id="cd-m">11</b><span>минут</span></div>
-        <div><b id="cd-s">18</b><span>секунд</span></div>
+        <div><b id="cd-h">04</b><span>часов</span></div>
+        <div><b id="cd-m">57</b><span>минут</span></div>
+        <div><b id="cd-s">16</b><span>секунд</span></div>
       </div>
     </section>
 
@@ -230,14 +228,11 @@ footer{text-align:center;padding:34px 0 0;font-family:'Great Vibes',cursive;colo
     <section class="rsvp reveal">
       <h2>Ты придёшь?</h2>
       <p id="rsvpText">Подтверди, пожалуйста, до 2 ноября</p>
-      <input id="guest" placeholder="Твоё имя" autocomplete="name">
-      <div class="choice">
-        <button data-v="yes">Приду 🥂</button>
-        <button data-v="no">Не смогу 😢</button>
+      <div class="rsvp-btns">
+        <a class="btn" id="yesBtn" target="_blank" rel="noopener" href="https://t.me/So_fifii?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82!%20%D0%AF%20%D0%BF%D1%80%D0%B8%D0%B4%D1%83%20%D0%BD%D0%B0%20%D1%82%D0%B2%D0%BE%D0%B9%20%D0%B4%D0%B5%D0%BD%D1%8C%20%D1%80%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D1%8F%204%20%D0%BD%D0%BE%D1%8F%D0%B1%D1%80%D1%8F%20%F0%9F%A5%82">Приду 🥂</a>
+        <a class="btn ghost" id="noBtn" target="_blank" rel="noopener" href="https://t.me/So_fifii?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82!%20%D0%9D%D0%B5%20%D1%81%D0%BC%D0%BE%D0%B3%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%20%F0%9F%98%A2">Не смогу 😢</a>
       </div>
-      <a class="btn" id="sendBtn" target="_blank" rel="noopener" href="https://t.me/So_fifii">Ответить в Telegram</a>
-      <p class="note" id="sendNote"></p>
-      <div class="thanks" id="thanks">Спасибо!</div>
+      <p class="note">Откроется чат с Соней в Telegram с готовым ответом — останется нажать «Отправить»</p>
     </section>
 
   </div>
@@ -252,7 +247,7 @@ document.documentElement.className = "js";
 const CONFIG = {
   name: "Соня",                       // имя именинницы
   age: 18,                           // сколько исполняется (или null, чтобы скрыть)
-  date: "2026-11-04T19:00:00",       // дата и время начала (ГГГГ-ММ-ДДTЧЧ:ММ)
+  date: "2026-11-04T19:00",          // дата и время начала по Москве (ГГГГ-ММ-ДДTЧЧ:ММ)
   message: "Приглашаю вас на свой день рождения! Ведь именно с вами мой праздник будет ярким, весёлым и запоминающимся. Отказы не принимаются, форс-мажоры не допускаются 😌 Жду вас без опозданий и с хорошим настроением ♥",
   timeline: [                        // программа вечера (можно удалить строки)
     ["19:00", "Сбор гостей"],
@@ -266,17 +261,19 @@ const CONFIG = {
   wishes: "Лучший подарок — твоё присутствие. Если хочется что-то подарить — конверт или цветы 💐",   // "" чтобы скрыть блок
   rsvpBy: "2 ноября",               // до какого числа ответить
   telegram: "So_fifii",              // ник в телеграме без @ (ответ придёт сюда)
-  whatsapp: "",                      // или номер для WhatsApp, напр. "79991234567" (если заполнен — ответ уйдёт туда)
 };
 /* ================================================================= */
 
 const $ = id => document.getElementById(id);
-const D = new Date(CONFIG.date);
+const [, Y, Mo, Dd, Hh, Mi] = CONFIG.date.match(/(\d+)-(\d+)-(\d+)T(\d+):(\d+)/).map(Number);
+const MON = Mo - 1;
+const START = Date.UTC(Y, MON, Dd, Hh - 3, Mi);           // время начала по Москве (UTC+3)
+const WDAY = new Date(Date.UTC(Y, MON, Dd)).getUTCDay();
 const MONTHS = ["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
 const MONTHS_G = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
 const WD = ["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"];
 const pad = n => String(n).padStart(2,"0");
-const hhmm = `${pad(D.getHours())}:${pad(D.getMinutes())}`;
+const hhmm = `${pad(Hh)}:${pad(Mi)}`;
 
 // fill content
 document.title = `${CONFIG.name} — приглашение на день рождения`;
@@ -284,14 +281,15 @@ $("introName").textContent = CONFIG.name;
 $("sealLetter").textContent = CONFIG.name.trim()[0] || "♥";
 $("name").textContent = CONFIG.name;
 if (CONFIG.age) $("age").textContent = CONFIG.age; else $("ageWrap").style.display = "none";
-$("weekday").textContent = WD[D.getDay()];
-$("dayNum").textContent = D.getDate();
-$("monthYear").textContent = `${MONTHS_G[D.getMonth()]} ${D.getFullYear()}`;
+$("weekday").textContent = WD[WDAY];
+$("dayNum").textContent = Dd;
+$("monthYear").textContent = MONTHS_G[MON];
+$("dateYear").textContent = Y;
 $("timeLine").textContent = `начало в ${hhmm}`;
 $("message").textContent = CONFIG.message;
-$("monthTitle").textContent = MONTHS[D.getMonth()][0].toUpperCase() + MONTHS[D.getMonth()].slice(1);
-$("yearTitle").textContent = D.getFullYear();
-$("timeBig").textContent = `${D.getDate()} ${MONTHS_G[D.getMonth()]}, ${hhmm}`;
+$("monthTitle").textContent = MONTHS[MON][0].toUpperCase() + MONTHS[MON].slice(1);
+$("yearTitle").textContent = Y;
+$("timeBig").textContent = `${Dd} ${MONTHS_G[MON]}, ${hhmm}`;
 $("timeline").innerHTML = CONFIG.timeline.map(([t,s]) => `<div><b>${t}</b><span>${s}</span></div>`).join("");
 if (!CONFIG.timeline.length && $("timeline")) $("timeline").remove();
 $("place").textContent = CONFIG.place;
@@ -305,20 +303,20 @@ $("foot").textContent = `с любовью, ${CONFIG.name}`;
 
 // calendar
 (function(){
-  const cal = $("cal"); if (cal.children.length) return; const y = D.getFullYear(), m = D.getMonth();
+  const cal = $("cal"); if (cal.children.length) return; const y = Y, m = MON;
   ["пн","вт","ср","чт","пт","сб","вс"].forEach(h => cal.insertAdjacentHTML("beforeend", `<div class="h">${h}</div>`));
   const first = (new Date(y,m,1).getDay() + 6) % 7; const days = new Date(y,m+1,0).getDate();
   for (let i=0;i<first;i++) cal.insertAdjacentHTML("beforeend","<div></div>");
   for (let d=1; d<=days; d++){
     const wd = (first + d - 1) % 7; let c = "d";
-    if (wd>=5) c += " we"; if (d === D.getDate()) c += " the";
+    if (wd>=5) c += " we"; if (d === Dd) c += " the";
     cal.insertAdjacentHTML("beforeend", `<div class="${c}">${d}</div>`);
   }
 })();
 
 // countdown
 function tick(){
-  let s = Math.max(0, Math.floor((D - new Date())/1000));
+  let s = Math.max(0, Math.floor((START - Date.now())/1000));
   $("cd-d").textContent = Math.floor(s/86400); s%=86400;
   $("cd-h").textContent = pad(Math.floor(s/3600)); s%=3600;
   $("cd-m").textContent = pad(Math.floor(s/60));
@@ -341,32 +339,57 @@ tick(); setInterval(tick, 1000);
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }), {threshold:.15});
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-// ---------- music box (Happy Birthday, WebAudio) ----------
-let ctx = null, playing = false, timer = null;
-const N = {G4:392,A4:440,B4:493.9,C5:523.3,D5:587.3,E5:659.3,F5:698.5,G5:784};
-const SONG = [["G4",.75],["G4",.25],["A4",1],["G4",1],["C5",1],["B4",2],
-              ["G4",.75],["G4",.25],["A4",1],["G4",1],["D5",1],["C5",2],
-              ["G4",.75],["G4",.25],["G5",1],["E5",1],["C5",1],["B4",1],["A4",2],
-              ["F5",.75],["F5",.25],["E5",1],["C5",1],["D5",1],["C5",3]];
-const BEAT = .42;
-function bell(f, t){
-  [1,2,3.01].forEach((mul,i) => {
+// ---------- music (Happy Birthday, мягкое пианино + аккорды) ----------
+let ctx = null, playing = false, timer = null, out = null;
+const F = n => 440 * Math.pow(2, (n - 69) / 12);          // midi -> Hz
+const M = {G4:67,A4:69,B4:71,C5:72,D5:74,E5:76,F5:77,G5:79};
+const CH = {C:[48,55,60,64], G:[43,55,59,62], F:[41,53,57,60], G7:[43,53,59,62]};
+// [нота, длительность в долях, аккорд с этой ноты]
+const SONG = [["G4",.75],["G4",.25],["A4",1,"C"],["G4",1],["C5",1],["B4",2,"G"],["",1],
+              ["G4",.75],["G4",.25],["A4",1,"G7"],["G4",1],["D5",1],["C5",2,"C"],["",1],
+              ["G4",.75],["G4",.25],["G5",1,"C"],["E5",1],["C5",1],["B4",1,"F"],["A4",2],["",1],
+              ["F5",.75],["F5",.25],["E5",1,"C"],["C5",1],["D5",1,"G7"],["C5",3,"C"]];
+const BEAT = .52;
+function initAudio(){
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  out = ctx.createGain(); out.gain.value = .55;
+  const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 3200;
+  // мягкая реверберация
+  const len = ctx.sampleRate * 2.6, ir = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let c = 0; c < 2; c++){ const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 3); }
+  const rev = ctx.createConvolver(); rev.buffer = ir;
+  const wet = ctx.createGain(); wet.gain.value = .35;
+  out.connect(lp); lp.connect(ctx.destination); lp.connect(rev); rev.connect(wet); wet.connect(ctx.destination);
+}
+function piano(midi, t, dur, vol){
+  const f = F(midi);
+  [[1,"triangle",1],[2,"sine",.25],[3,"sine",.08]].forEach(([mul,type,v]) => {
     const o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = "sine"; o.frequency.value = f*mul;
-    const v = [.22,.06,.03][i];
-    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+1.6);
-    o.connect(g).connect(ctx.destination); o.start(t); o.stop(t+1.7);
+    o.type = type; o.frequency.value = f*mul; o.detune.value = (Math.random()-.5)*4;
+    const end = t + Math.max(dur, .4) + 1.2;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(vol*v, t + .012);
+    g.gain.exponentialRampToValueAtTime(vol*v*.35, t + .35);
+    g.gain.exponentialRampToValueAtTime(.0001, end);
+    o.connect(g).connect(out); o.start(t); o.stop(end + .05);
   });
 }
+function chord(name, t, dur){
+  CH[name].forEach((m, i) => piano(m, t + i*.035, dur, i === 0 ? .16 : .09));   // лёгкое арпеджио
+}
 function playSong(){
-  let t = ctx.currentTime + .1;
-  SONG.forEach(([n,d]) => { bell(N[n], t); t += d*BEAT; });
-  const len = (t - ctx.currentTime + 1.2) * 1000;
+  let t = ctx.currentTime + .15;
+  SONG.forEach(([n, d, c], i) => {
+    if (c){ let span = 0; for (let j = i; j < SONG.length; j++){ if (j > i && SONG[j][2]) break; span += SONG[j][1]; } chord(c, t, span*BEAT); }
+    if (n) piano(M[n], t, d*BEAT, .30);
+    t += d*BEAT;
+  });
+  const len = (t - ctx.currentTime + 1.5) * 1000;
   timer = setTimeout(() => { if (playing) playSong(); }, len);
 }
 function startMusic(){
   try{
-    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    if (!ctx) initAudio();
     ctx.resume(); playing = true; playSong();
     $("music").classList.add("playing");
     $("music").innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
@@ -390,40 +413,9 @@ $("openChk").checked = false;
 $("openChk").addEventListener("change", () => { if ($("openChk").checked && !playing) startMusic(); });
 
 // ---------- RSVP ----------
-let answer = null;
-document.querySelectorAll(".choice button").forEach(b => b.onclick = () => {
-  answer = b.dataset.v;
-  document.querySelectorAll(".choice button").forEach(x => x.classList.toggle("on", x===b));
-  updateSend();
-});
-$("guest").addEventListener("input", updateSend);
-updateSend();
-function msg(){
-  const g = $("guest").value.trim() || "Гость";
-  return answer === "yes"
-    ? `Привет! Это ${g} 🥂 Подтверждаю, что приду на твой день рождения ${D.getDate()} ${MONTHS_G[D.getMonth()]}!`
-    : `Привет! Это ${g}. К сожалению, не смогу прийти на твой день рождения 😢 Поздравляю заранее!`;
-}
-function updateSend(){
-  const btn = $("sendBtn");
-  if (!answer){ btn.setAttribute("aria-disabled","true"); return; }
-  btn.removeAttribute("aria-disabled");
-  if (CONFIG.whatsapp){
-    btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg())}`;
-    btn.textContent = "Отправить в WhatsApp";
-    $("sendNote").textContent = "";
-  } else {
-    btn.href = `https://t.me/${CONFIG.telegram}`;
-    btn.textContent = "Отправить в Telegram";
-    $("sendNote").textContent = "Текст ответа скопируется — просто вставь его в чат";
-  }
-}
-$("sendBtn").addEventListener("click", () => {
-  if (!answer) return;
-  try { navigator.clipboard && navigator.clipboard.writeText(msg()).catch(()=>{}); } catch(e){}
-  $("thanks").style.display = "block";
-  $("thanks").textContent = answer === "yes" ? "Жду тебя! ♥" : "Жаль… спасибо, что ответил(а) ♥";
-});
+const tgLink = t => `https://t.me/${CONFIG.telegram}?text=${encodeURIComponent(t)}`;
+$("yesBtn").href = tgLink(`Привет! Я приду на твой день рождения ${Dd} ${MONTHS_G[MON]} 🥂`);
+$("noBtn").href  = tgLink(`Привет! Не смогу прийти 😢`);
 </script>
 
 
