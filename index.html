@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ru" class="nojs"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Соня — приглашение на день рождения</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&amp;family=Montserrat:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f8f1ea; --paper:#fffaf5; --wine:#7a1426; --wine-d:#4d0b17; --rose:#e9c9cf;
+  --ink:#2a1a1d; --muted:#8a7377; --gold:#c9a46a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--wine-d);color:var(--ink);font-family:'Montserrat',sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;overflow-x:hidden}
+.sr{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+label.envwrap{display:block;cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+/* ---------- sparkles bg ---------- */
+.sparkles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.sparkles i{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:0;animation:tw 3s infinite ease-in-out}
+@keyframes tw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.9;transform:scale(1)}}
+
+/* ---------- envelope intro ---------- */
+#intro{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  background:radial-gradient(circle at 50% 40%,#8e1c31 0%,#4d0b17 70%);transition:opacity .9s ease .6s,visibility 0s 1.5s}
+#openChk:checked + #intro{opacity:0;visibility:hidden}
+.intro-title{font-family:'Cormorant Garamond',serif;color:var(--cream);font-size:22px;letter-spacing:.08em;text-align:center}
+.intro-title b{display:block;font-family:'Great Vibes',cursive;font-weight:400;font-size:46px;letter-spacing:0;color:#fff;margin-top:4px}
+.env{position:relative;width:min(78vw,320px);aspect-ratio:1.45;cursor:pointer;perspective:900px;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45));animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.env .back{position:absolute;inset:0;background:#efe3d8;border-radius:6px}
+.env .letter{position:absolute;left:7%;right:7%;top:8%;bottom:8%;background:var(--paper);border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:'Great Vibes',cursive;font-size:30px;color:var(--wine);opacity:0;transition:transform .9s cubic-bezier(.2,.8,.2,1) .35s,opacity .2s .3s;z-index:2}
+.env .front{position:absolute;inset:0;z-index:3;border-radius:6px;overflow:hidden;pointer-events:none}
+.env .front::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#f6ece2 50%,transparent 50%) left/50% 100% no-repeat,linear-gradient(225deg,#f6ece2 50%,transparent 50%) right/50% 100% no-repeat}
+.env .front::after{content:"";position:absolute;left:0;right:0;bottom:0;height:62%;background:#f3e7dc;clip-path:polygon(0 100%,50% 18%,100% 100%)}
+.env .flap{position:absolute;left:0;right:0;top:0;height:60%;z-index:4;transform-origin:top;transition:transform .6s ease,z-index 0s .3s}
+.env .flap::before{content:"";position:absolute;inset:0;background:#e8d8ca;clip-path:polygon(0 0,100% 0,50% 100%)}
+.seal{position:absolute;left:50%;top:60%;width:58px;height:58px;margin:-29px 0 0 -29px;z-index:5;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#b3283f,#6e0f20 70%);box-shadow:0 3px 6px rgba(0,0,0,.35),inset 0 0 0 4px rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;font-family:'Great Vibes',cursive;color:#f3d5b5;font-size:26px;transition:opacity .3s}
+#openChk:checked + #intro .env{animation:none}
+#openChk:checked + #intro .env .flap{transform:rotateX(180deg);z-index:1}
+#openChk:checked + #intro .env .seal{opacity:0}
+#openChk:checked + #intro .env .letter{transform:translateY(-55%);opacity:1}
+.tap{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rose);font-size:18px;letter-spacing:.05em;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* ---------- main card ---------- */
+main{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:22px 14px 60px}
+.card{background:var(--paper);border-radius:22px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+section{padding:46px 28px;text-align:center;position:relative}
+section+section{border-top:1px solid #efe2d8}
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease}
+.js .reveal.in{opacity:1;transform:none}
+
+.hero{padding-top:60px;background:
+  radial-gradient(circle at 15% 10%,rgba(201,164,106,.18),transparent 40%),
+  radial-gradient(circle at 90% 80%,rgba(122,20,38,.10),transparent 45%),var(--paper)}
+.eyebrow{font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)}
+.lines{display:flex;align-items:center;gap:12px;justify-content:center;margin:14px 0}
+.lines::before,.lines::after{content:"";height:1px;width:46px;background:var(--gold)}
+.name{font-family:'Great Vibes',cursive;font-size:clamp(64px,19vw,96px);line-height:1;color:var(--wine);margin:6px 0 2px}
+.sub{font-family:'Cormorant Garamond',serif;font-size:21px;font-style:italic;color:var(--ink)}
+.age{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:120px;line-height:1;color:var(--wine);margin:18px 0 6px;position:relative;display:inline-block}
+.age small{position:absolute;right:-30px;top:18px;font-size:22px;font-weight:500;font-style:italic}
+.dateRow{display:flex;align-items:center;justify-content:center;gap:16px;font-family:'Cormorant Garamond',serif;color:var(--ink);margin-top:6px}
+.dateRow .side{font-size:15px;letter-spacing:.25em;text-transform:uppercase;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 4px;min-width:96px}
+.dateRow .big{font-size:52px;font-weight:600;line-height:1}
+
+.music{position:absolute;top:16px;right:16px;width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.music svg{width:18px;height:18px}
+.music.playing{animation:spin 4s linear infinite;background:radial-gradient(circle,#2a1a1d 30%,#000 31%,#2a1a1d 34%,#111 100%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.music-hint{position:absolute;top:66px;right:8px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--muted);transform:rotate(-8deg)}
+
+.text p{font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1.55;color:var(--ink)}
+.hearts{color:var(--wine);letter-spacing:6px;margin:14px 0 4px;font-size:15px}
+h2{font-family:'Great Vibes',cursive;font-weight:400;font-size:52px;color:var(--wine);line-height:1.1}
+h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;margin-top:10px;color:var(--ink)}
+.year{font-family:'Cormorant Garamond',serif;letter-spacing:.4em;font-size:20px;color:var(--muted);margin:4px 0 22px}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px 0;max-width:360px;margin:0 auto;font-family:'Cormorant Garamond',serif}
+.cal .h{font-size:13px;letter-spacing:.15em;color:var(--muted);padding-bottom:6px}
+.cal .d{font-size:19px;font-weight:500;height:38px;display:flex;align-items:center;justify-content:center;position:relative}
+.cal .we{color:var(--wine)}
+.cal .the{color:#fff;font-weight:600}
+.cal .the::before{content:"";position:absolute;width:40px;height:40px;z-index:-1;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%237a1426' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.9 4.5 6.6 4.5c2.2 0 3.9 1.3 5.4 3.1 1.5-1.8 3.2-3.1 5.4-3.1 3.7 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E") center/contain no-repeat;animation:beat 1.4s infinite}
+.cal .d{z-index:0}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.15)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
+
+/* countdown */
+.count{display:flex;justify-content:center;gap:10px;margin-top:30px}
+.count div{background:var(--cream);border-radius:14px;padding:12px 6px;width:70px}
+.count b{display:block;font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--wine);line-height:1}
+.count span{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+
+/* info */
+.icon{width:62px;height:62px;margin:0 auto;color:var(--ink)}
+.info p{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ink);margin-top:6px;line-height:1.4}
+.info .muted{color:var(--muted);font-size:17px}
+.btn{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:13px 26px;border-radius:40px;border:1px solid var(--ink);
+  font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:none;background:transparent;cursor:pointer;transition:.25s}
+.btn:hover,.btn:active{background:var(--ink);color:#fff}
+.btn.solid{background:var(--wine);border-color:var(--wine);color:#fff}
+.btn.solid:hover{background:var(--wine-d)}
+.swatches{display:flex;justify-content:center;gap:12px;margin-top:16px}
+.swatches i{width:34px;height:34px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+
+/* timeline */
+.tl{max-width:320px;margin:20px auto 0;text-align:left}
+.tl div{display:flex;gap:18px;padding:12px 0;border-bottom:1px dashed #e6d6cc;font-family:'Cormorant Garamond',serif;font-size:19px}
+.tl div:last-child{border:none}
+.tl b{color:var(--wine);min-width:58px;font-weight:600}
+
+/* rsvp */
+.rsvp{background:var(--wine);color:var(--cream)}
+.rsvp h2{color:#fff}
+.rsvp p{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--rose);margin-top:6px}
+.rsvp input{width:100%;max-width:320px;margin:22px auto 0;display:block;padding:14px 18px;border-radius:40px;border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);color:#fff;font-family:'Montserrat',sans-serif;font-size:15px;outline:none;text-align:center}
+.rsvp input::placeholder{color:rgba(255,255,255,.55)}
+.choice{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.choice button{padding:13px 20px;border-radius:40px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;font-family:'Montserrat',sans-serif;font-size:13px;cursor:pointer;transition:.2s}
+.choice button.on{background:var(--cream);color:var(--wine);border-color:var(--cream)}
+.rsvp .btn{border-color:var(--cream);color:var(--wine);background:var(--cream)}
+.js .rsvp .btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.note{font-size:12px!important;font-family:'Montserrat',sans-serif!important;color:rgba(255,255,255,.6)!important;margin-top:14px!important}
+.thanks{display:none;margin-top:18px;font-family:'Great Vibes',cursive;font-size:34px;color:#fff}
+
+footer{text-align:center;padding:34px 0 0;font-family:'Great Vibes',cursive;color:var(--rose);font-size:30px;position:relative;z-index:1}
+.divider{font-size:14px;color:var(--gold);letter-spacing:10px;margin:24px 0 0}
+.nojs .music,.nojs .music-hint,.nojs .count,.nojs #guest,.nojs .choice,.nojs #sendNote{display:none}
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     ✏️  ВСЁ, ЧТО НУЖНО ПОМЕНЯТЬ — В CONFIG НИЖЕ (в <script>)
+     ================================================================ -->
+
+<div class="sparkles" id="sparkles"></div>
+
+<input type="checkbox" id="openChk" class="sr" aria-label="Открыть конверт">
+<div id="intro">
+  <div class="intro-title">Тебе пришло приглашение<b id="introName">Соня</b></div>
+  <label class="envwrap" for="openChk"><div class="env" id="env">
+    <div class="back"></div>
+    <div class="letter">Открывай ♡</div>
+    <div class="front"></div>
+    <div class="flap"></div>
+    <div class="seal" id="sealLetter">С</div>
+  </div></label>
+  <label class="tap envwrap" for="openChk">нажми на конверт</label>
+</div>
+
+<main>
+  <div class="card">
+
+    <section class="hero">
+      <button class="music" id="music" aria-label="Включить музыку">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+      </button>
+      <div class="music-hint">музыка ♪</div>
+
+      <div class="eyebrow">ты приглашён(а)</div>
+      <div class="lines"><span class="eyebrow">на день рождения</span></div>
+      <div class="name" id="name">Соня</div>
+      <div class="age" id="ageWrap"><span id="age">18</span><small>лет</small></div>
+      <div class="dateRow">
+        <div class="side" id="weekday">среда</div>
+        <div class="big" id="dayNum">4</div>
+        <div class="side" id="monthYear">ноября 2026</div>
+      </div>
+      <div class="sub" style="margin-top:16px" id="timeLine">начало в 19:00</div>
+    </section>
+
+    <section class="text reveal">
+      <h2>Дорогие гости</h2>
+      <div class="hearts">♥ ♥ ♥ ♥</div>
+      <p id="message">Приглашаю вас на свой день рождения! Ведь именно с вами мой праздник будет ярким, весёлым и запоминающимся. Отказы не принимаются, форс-мажоры не допускаются 😌 Жду вас без опозданий и с хорошим настроением ♥</p>
+      <div class="divider">✦ ✦ ✦</div>
+    </section>
+
+    <section class="reveal">
+      <h2 id="monthTitle">Ноябрь</h2>
+      <div class="year" id="yearTitle">2026</div>
+      <div class="cal" id="cal"><div class="h">пн</div><div class="h">вт</div><div class="h">ср</div><div class="h">чт</div><div class="h">пт</div><div class="h">сб</div><div class="h">вс</div><div></div><div></div><div></div><div></div><div></div><div></div><div class="d we">1</div><div class="d">2</div><div class="d">3</div><div class="d the">4</div><div class="d">5</div><div class="d">6</div><div class="d we">7</div><div class="d we">8</div><div class="d">9</div><div class="d">10</div><div class="d">11</div><div class="d">12</div><div class="d">13</div><div class="d we">14</div><div class="d we">15</div><div class="d">16</div><div class="d">17</div><div class="d">18</div><div class="d">19</div><div class="d">20</div><div class="d we">21</div><div class="d we">22</div><div class="d">23</div><div class="d">24</div><div class="d">25</div><div class="d">26</div><div class="d">27</div><div class="d we">28</div><div class="d we">29</div><div class="d">30</div></div>
+      <div class="count" id="count">
+        <div><b id="cd-d">5</b><span>дней</span></div>
+        <div><b id="cd-h">20</b><span>часов</span></div>
+        <div><b id="cd-m">11</b><span>минут</span></div>
+        <div><b id="cd-s">18</b><span>секунд</span></div>
+      </div>
+    </section>
+
+    <section class="info reveal">
+      <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="32" cy="34" r="20"></circle><path d="M32 22v12l8 5"></path><path d="M10 18a26 26 0 0 1 10-8M54 18a26 26 0 0 0-10-8"></path></svg>
+      <h3>Время</h3>
+      <p id="timeBig">4 ноября, 19:00</p>
+      <div class="tl" id="timeline"><div><b>19:00</b><span>Сбор гостей</span></div><div><b>19:30</b><span>Ужин</span></div><div><b>21:00</b><span>Торт и танцы</span></div></div>
+    </section>
+
+    <section class="info reveal">
+      <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56s16-15 16-28a16 16 0 0 0-32 0c0 13 16 28 16 28z"></path><circle cx="32" cy="28" r="6"></circle></svg>
+      <h3>Место</h3>
+      <p id="place">Название места</p>
+      <p class="muted" id="address">Москва, ул. Примерная, 1</p>
+      <a class="btn" id="mapBtn" target="_blank" rel="noopener" href="https://yandex.ru/maps/?text=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D1%83%D0%BB.%20%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D0%BD%D0%B0%D1%8F%2C%201">Открыть карту →</a>
+    </section>
+
+    <section class="info reveal">
+      <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M24 10l-14 8 5 10 6-3v29h22V25l6 3 5-10-14-8c-1 4-4 7-8 7s-7-3-8-7z"></path></svg>
+      <h3>Дресс-код</h3>
+      <p id="dress">Total black — чёрный, можно с акцентами бордо</p>
+      <div class="swatches" id="swatches"><i style="background:#111111"></i><i style="background:#4d0b17"></i><i style="background:#7a1426"></i><i style="background:#e9c9cf"></i></div>
+    </section>
+
+    <section class="info reveal" id="wishSec">
+      <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="12" y="26" width="40" height="28" rx="2"></rect><path d="M8 18h48v8H8zM32 18v36M32 18c-4-8-14-8-12-2 1 3 7 2 12 2zM32 18c4-8 14-8 12-2-1 3-7 2-12 2z"></path></svg>
+      <h3>Пожелания</h3>
+      <p id="wishes">Лучший подарок — твоё присутствие. Если хочется что-то подарить — конверт или цветы 💐</p>
+    </section>
+
+    <section class="rsvp reveal">
+      <h2>Ты придёшь?</h2>
+      <p id="rsvpText">Подтверди, пожалуйста, до 2 ноября</p>
+      <input id="guest" placeholder="Твоё имя" autocomplete="name">
+      <div class="choice">
+        <button data-v="yes">Приду 🥂</button>
+        <button data-v="no">Не смогу 😢</button>
+      </div>
+      <a class="btn" id="sendBtn" target="_blank" rel="noopener" href="https://t.me/So_fifii">Ответить в Telegram</a>
+      <p class="note" id="sendNote"></p>
+      <div class="thanks" id="thanks">Спасибо!</div>
+    </section>
+
+  </div>
+  <footer id="foot">с любовью, Соня</footer>
+</main>
+
+<script>
+document.documentElement.className = "js";
+/* =================================================================
+   ✏️  CONFIG — поменяй тут данные, всё остальное подтянется само
+   ================================================================= */
+const CONFIG = {
+  name: "Соня",                       // имя именинницы
+  age: 18,                           // сколько исполняется (или null, чтобы скрыть)
+  date: "2026-11-04T19:00:00",       // дата и время начала (ГГГГ-ММ-ДДTЧЧ:ММ)
+  message: "Приглашаю вас на свой день рождения! Ведь именно с вами мой праздник будет ярким, весёлым и запоминающимся. Отказы не принимаются, форс-мажоры не допускаются 😌 Жду вас без опозданий и с хорошим настроением ♥",
+  timeline: [                        // программа вечера (можно удалить строки)
+    ["19:00", "Сбор гостей"],
+    ["19:30", "Ужин"],
+    ["21:00", "Торт и танцы"],
+  ],
+  place: "Название места",
+  address: "Москва, ул. Примерная, 1",
+  dressCode: "Total black — чёрный, можно с акцентами бордо",
+  dressColors: ["#111111", "#4d0b17", "#7a1426", "#e9c9cf"],
+  wishes: "Лучший подарок — твоё присутствие. Если хочется что-то подарить — конверт или цветы 💐",   // "" чтобы скрыть блок
+  rsvpBy: "2 ноября",               // до какого числа ответить
+  telegram: "So_fifii",              // ник в телеграме без @ (ответ придёт сюда)
+  whatsapp: "",                      // или номер для WhatsApp, напр. "79991234567" (если заполнен — ответ уйдёт туда)
+};
+/* ================================================================= */
+
+const $ = id => document.getElementById(id);
+const D = new Date(CONFIG.date);
+const MONTHS = ["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
+const MONTHS_G = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+const WD = ["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"];
+const pad = n => String(n).padStart(2,"0");
+const hhmm = `${pad(D.getHours())}:${pad(D.getMinutes())}`;
+
+// fill content
+document.title = `${CONFIG.name} — приглашение на день рождения`;
+$("introName").textContent = CONFIG.name;
+$("sealLetter").textContent = CONFIG.name.trim()[0] || "♥";
+$("name").textContent = CONFIG.name;
+if (CONFIG.age) $("age").textContent = CONFIG.age; else $("ageWrap").style.display = "none";
+$("weekday").textContent = WD[D.getDay()];
+$("dayNum").textContent = D.getDate();
+$("monthYear").textContent = `${MONTHS_G[D.getMonth()]} ${D.getFullYear()}`;
+$("timeLine").textContent = `начало в ${hhmm}`;
+$("message").textContent = CONFIG.message;
+$("monthTitle").textContent = MONTHS[D.getMonth()][0].toUpperCase() + MONTHS[D.getMonth()].slice(1);
+$("yearTitle").textContent = D.getFullYear();
+$("timeBig").textContent = `${D.getDate()} ${MONTHS_G[D.getMonth()]}, ${hhmm}`;
+$("timeline").innerHTML = CONFIG.timeline.map(([t,s]) => `<div><b>${t}</b><span>${s}</span></div>`).join("");
+if (!CONFIG.timeline.length && $("timeline")) $("timeline").remove();
+$("place").textContent = CONFIG.place;
+$("address").textContent = CONFIG.address;
+$("mapBtn").href = "https://yandex.ru/maps/?text=" + encodeURIComponent(CONFIG.address);
+$("dress").textContent = CONFIG.dressCode;
+$("swatches").innerHTML = CONFIG.dressColors.map(c => `<i style="background:${c}"></i>`).join("");
+if (CONFIG.wishes) $("wishes").textContent = CONFIG.wishes; else if ($("wishSec")) $("wishSec").remove();
+$("rsvpText").textContent = `Подтверди, пожалуйста, до ${CONFIG.rsvpBy}`;
+$("foot").textContent = `с любовью, ${CONFIG.name}`;
+
+// calendar
+(function(){
+  const cal = $("cal"); if (cal.children.length) return; const y = D.getFullYear(), m = D.getMonth();
+  ["пн","вт","ср","чт","пт","сб","вс"].forEach(h => cal.insertAdjacentHTML("beforeend", `<div class="h">${h}</div>`));
+  const first = (new Date(y,m,1).getDay() + 6) % 7; const days = new Date(y,m+1,0).getDate();
+  for (let i=0;i<first;i++) cal.insertAdjacentHTML("beforeend","<div></div>");
+  for (let d=1; d<=days; d++){
+    const wd = (first + d - 1) % 7; let c = "d";
+    if (wd>=5) c += " we"; if (d === D.getDate()) c += " the";
+    cal.insertAdjacentHTML("beforeend", `<div class="${c}">${d}</div>`);
+  }
+})();
+
+// countdown
+function tick(){
+  let s = Math.max(0, Math.floor((D - new Date())/1000));
+  $("cd-d").textContent = Math.floor(s/86400); s%=86400;
+  $("cd-h").textContent = pad(Math.floor(s/3600)); s%=3600;
+  $("cd-m").textContent = pad(Math.floor(s/60));
+  $("cd-s").textContent = pad(s%60);
+}
+tick(); setInterval(tick, 1000);
+
+// sparkles
+(function(){
+  const box = $("sparkles"); if (box.children.length) return;
+  for (let i=0;i<45;i++){
+    const e = document.createElement("i");
+    e.style.left = Math.random()*100+"%"; e.style.top = Math.random()*100+"%";
+    e.style.animationDelay = (Math.random()*3)+"s"; e.style.animationDuration = (2+Math.random()*3)+"s";
+    box.appendChild(e);
+  }
+})();
+
+// scroll reveal
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }), {threshold:.15});
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+// ---------- music box (Happy Birthday, WebAudio) ----------
+let ctx = null, playing = false, timer = null;
+const N = {G4:392,A4:440,B4:493.9,C5:523.3,D5:587.3,E5:659.3,F5:698.5,G5:784};
+const SONG = [["G4",.75],["G4",.25],["A4",1],["G4",1],["C5",1],["B4",2],
+              ["G4",.75],["G4",.25],["A4",1],["G4",1],["D5",1],["C5",2],
+              ["G4",.75],["G4",.25],["G5",1],["E5",1],["C5",1],["B4",1],["A4",2],
+              ["F5",.75],["F5",.25],["E5",1],["C5",1],["D5",1],["C5",3]];
+const BEAT = .42;
+function bell(f, t){
+  [1,2,3.01].forEach((mul,i) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "sine"; o.frequency.value = f*mul;
+    const v = [.22,.06,.03][i];
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+1.6);
+    o.connect(g).connect(ctx.destination); o.start(t); o.stop(t+1.7);
+  });
+}
+function playSong(){
+  let t = ctx.currentTime + .1;
+  SONG.forEach(([n,d]) => { bell(N[n], t); t += d*BEAT; });
+  const len = (t - ctx.currentTime + 1.2) * 1000;
+  timer = setTimeout(() => { if (playing) playSong(); }, len);
+}
+function startMusic(){
+  try{
+    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    ctx.resume(); playing = true; playSong();
+    $("music").classList.add("playing");
+    $("music").innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+  }catch(e){}
+}
+function stopMusic(){
+  playing = false; clearTimeout(timer);
+  if (ctx) ctx.suspend();
+  $("music").classList.remove("playing");
+  $("music").innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+}
+$("music").onclick = () => {
+  if (playing) { stopMusic(); return; }
+  if (ctx && ctx.state === "suspended" && timer) { playing = true; ctx.resume(); playSong(); $("music").classList.add("playing");
+    $("music").innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'; return; }
+  startMusic();
+};
+
+// ---------- envelope ----------
+$("openChk").checked = false;
+$("openChk").addEventListener("change", () => { if ($("openChk").checked && !playing) startMusic(); });
+
+// ---------- RSVP ----------
+let answer = null;
+document.querySelectorAll(".choice button").forEach(b => b.onclick = () => {
+  answer = b.dataset.v;
+  document.querySelectorAll(".choice button").forEach(x => x.classList.toggle("on", x===b));
+  updateSend();
+});
+$("guest").addEventListener("input", updateSend);
+updateSend();
+function msg(){
+  const g = $("guest").value.trim() || "Гость";
+  return answer === "yes"
+    ? `Привет! Это ${g} 🥂 Подтверждаю, что приду на твой день рождения ${D.getDate()} ${MONTHS_G[D.getMonth()]}!`
+    : `Привет! Это ${g}. К сожалению, не смогу прийти на твой день рождения 😢 Поздравляю заранее!`;
+}
+function updateSend(){
+  const btn = $("sendBtn");
+  if (!answer){ btn.setAttribute("aria-disabled","true"); return; }
+  btn.removeAttribute("aria-disabled");
+  if (CONFIG.whatsapp){
+    btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg())}`;
+    btn.textContent = "Отправить в WhatsApp";
+    $("sendNote").textContent = "";
+  } else {
+    btn.href = `https://t.me/${CONFIG.telegram}`;
+    btn.textContent = "Отправить в Telegram";
+    $("sendNote").textContent = "Текст ответа скопируется — просто вставь его в чат";
+  }
+}
+$("sendBtn").addEventListener("click", () => {
+  if (!answer) return;
+  try { navigator.clipboard && navigator.clipboard.writeText(msg()).catch(()=>{}); } catch(e){}
+  $("thanks").style.display = "block";
+  $("thanks").textContent = answer === "yes" ? "Жду тебя! ♥" : "Жаль… спасибо, что ответил(а) ♥";
+});
+</script>
+
+
+</body></html>
