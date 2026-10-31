@@ -70,6 +70,15 @@ section+section{border-top:1px solid #efe2d8}
 .dateRow .side{font-size:14px;letter-spacing:.3em;text-transform:uppercase;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:9px 0 8px;text-align:center}
 .dateRow .big{font-size:86px;font-weight:600;line-height:1;text-align:center;color:var(--wine);font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1}
 .age,.count b,.cal{font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1}
+.bdLine{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--muted);margin:2px 0 26px}
+.partyLabel{margin-bottom:10px}
+.cal .bd{color:var(--wine);font-weight:600}
+.cal .bd::after{content:"";position:absolute;width:32px;height:32px;border:1px solid var(--wine);border-radius:50%;z-index:-1}
+.legend{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:18px;white-space:nowrap;font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink)}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{display:inline-block;width:16px;height:16px;border-radius:50%}
+.legend .lb{border:1px solid var(--wine)}
+.legend .lp{background:var(--wine);clip-path:path("M8 14.5S2.5 11 1.2 7.7C.2 5.2 1.6 2.4 4.3 2.4 5.9 2.4 7 3.3 8 4.6 9 3.3 10.1 2.4 11.7 2.4c2.7 0 4.1 2.8 3.1 5.3C13.5 11 8 14.5 8 14.5z");border-radius:0}
 .dateYear{font-family:'Cormorant Garamond',serif;letter-spacing:.5em;font-size:15px;color:var(--muted);margin-top:10px;padding-left:.5em}
 
 .music{position:absolute;top:16px;right:16px;width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
@@ -169,13 +178,15 @@ footer{text-align:center;padding:34px 0 0;font-family:'Great Vibes',cursive;colo
       <div class="lines"><span class="eyebrow">на день рождения</span></div>
       <div class="name" id="name">Соня</div>
       <div class="age" id="ageWrap"><span id="age">18</span><small>лет</small></div>
+      <div class="bdLine" id="bdLine">исполняется 4 ноября</div>
+      <div class="eyebrow partyLabel">празднуем</div>
       <div class="dateRow">
-        <div class="side" id="weekday">среда</div>
-        <div class="big" id="dayNum">4</div>
+        <div class="side" id="weekday">суббота</div>
+        <div class="big" id="dayNum">7</div>
         <div class="side" id="monthYear">ноября</div>
       </div>
       <div class="dateYear" id="dateYear">2026</div>
-      <div class="sub" style="margin-top:16px" id="timeLine">начало в 19:00</div>
+      <div class="sub" style="margin-top:16px" id="timeLine">начало в 14:15</div>
     </section>
 
     <section class="text reveal">
@@ -188,48 +199,50 @@ footer{text-align:center;padding:34px 0 0;font-family:'Great Vibes',cursive;colo
     <section class="reveal">
       <h2 id="monthTitle">Ноябрь</h2>
       <div class="year" id="yearTitle">2026</div>
-      <div class="cal" id="cal"><div class="h">пн</div><div class="h">вт</div><div class="h">ср</div><div class="h">чт</div><div class="h">пт</div><div class="h">сб</div><div class="h">вс</div><div></div><div></div><div></div><div></div><div></div><div></div><div class="d we">1</div><div class="d">2</div><div class="d">3</div><div class="d the">4</div><div class="d">5</div><div class="d">6</div><div class="d we">7</div><div class="d we">8</div><div class="d">9</div><div class="d">10</div><div class="d">11</div><div class="d">12</div><div class="d">13</div><div class="d we">14</div><div class="d we">15</div><div class="d">16</div><div class="d">17</div><div class="d">18</div><div class="d">19</div><div class="d">20</div><div class="d we">21</div><div class="d we">22</div><div class="d">23</div><div class="d">24</div><div class="d">25</div><div class="d">26</div><div class="d">27</div><div class="d we">28</div><div class="d we">29</div><div class="d">30</div></div>
+      <div class="cal" id="cal"><div class="h">пн</div><div class="h">вт</div><div class="h">ср</div><div class="h">чт</div><div class="h">пт</div><div class="h">сб</div><div class="h">вс</div><div></div><div></div><div></div><div></div><div></div><div></div><div class="d we">1</div><div class="d">2</div><div class="d">3</div><div class="d bd">4</div><div class="d">5</div><div class="d">6</div><div class="d we the">7</div><div class="d we">8</div><div class="d">9</div><div class="d">10</div><div class="d">11</div><div class="d">12</div><div class="d">13</div><div class="d we">14</div><div class="d we">15</div><div class="d">16</div><div class="d">17</div><div class="d">18</div><div class="d">19</div><div class="d">20</div><div class="d we">21</div><div class="d we">22</div><div class="d">23</div><div class="d">24</div><div class="d">25</div><div class="d">26</div><div class="d">27</div><div class="d we">28</div><div class="d we">29</div><div class="d">30</div></div>
+      <div class="legend"><span><i class="lb"></i><b id="lgB">4</b>&nbsp;— день рождения</span><span><i class="lp"></i><b id="lgP">7</b>&nbsp;— празднуем</span></div>
       <div class="count" id="count">
-        <div><b id="cd-d">5</b><span>дней</span></div>
-        <div><b id="cd-h">04</b><span>часов</span></div>
-        <div><b id="cd-m">53</b><span>минут</span></div>
-        <div><b id="cd-s">05</b><span>секунд</span></div>
+        <div><b id="cd-d">7</b><span>дней</span></div>
+        <div><b id="cd-h">03</b><span>часов</span></div>
+        <div><b id="cd-m">12</b><span>минут</span></div>
+        <div><b id="cd-s">27</b><span>секунд</span></div>
       </div>
     </section>
 
     <section class="info reveal">
       <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="32" cy="34" r="20"></circle><path d="M32 22v12l8 5"></path><path d="M10 18a26 26 0 0 1 10-8M54 18a26 26 0 0 0-10-8"></path></svg>
       <h3>Время</h3>
-      <p id="timeBig">4 ноября, 19:00</p>
-      <div class="tl" id="timeline"><div><b>19:00</b><span>Сбор гостей</span></div><div><b>19:30</b><span>Ужин</span></div><div><b>21:00</b><span>Торт и танцы</span></div></div>
+      <p id="timeBig">7 ноября, 14:15</p>
+      <div class="tl" id="timeline"><div><b>14:15</b><span>Сбор гостей</span></div><div><b>20:45</b><span>Игра</span></div><div><b>00:00</b><span>Покатушки</span></div></div>
     </section>
 
     <section class="info reveal">
       <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56s16-15 16-28a16 16 0 0 0-32 0c0 13 16 28 16 28z"></path><circle cx="32" cy="28" r="6"></circle></svg>
       <h3>Место</h3>
-      <p id="place">Название места</p>
-      <p class="muted" id="address">Москва, ул. Примерная, 1</p>
-      <a class="btn" id="mapBtn" target="_blank" rel="noopener" href="https://yandex.ru/maps/?text=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D1%83%D0%BB.%20%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D0%BD%D0%B0%D1%8F%2C%201">Открыть карту →</a>
+      <p id="place">ТЛПХ Дроздово 2</p>
+      <p class="muted" id="address">Вишнёвая улица, дом 41а</p>
+      <a class="btn" id="mapBtn" target="_blank" rel="noopener" href="https://yandex.ru/maps/?text=%D0%A2%D0%9B%D0%9F%D0%A5%20%D0%94%D1%80%D0%BE%D0%B7%D0%B4%D0%BE%D0%B2%D0%BE%202%2C%20%D0%92%D0%B8%D1%88%D0%BD%D1%91%D0%B2%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%20%D0%B4%D0%BE%D0%BC%2041%D0%B0">Открыть карту →</a>
     </section>
 
     <section class="info reveal">
       <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M24 10l-14 8 5 10 6-3v29h22V25l6 3 5-10-14-8c-1 4-4 7-8 7s-7-3-8-7z"></path></svg>
       <h3>Дресс-код</h3>
-      <p id="dress">Total black — чёрный, можно с акцентами бордо</p>
-      <div class="swatches" id="swatches"><i style="background:#111111"></i><i style="background:#4d0b17"></i><i style="background:#7a1426"></i><i style="background:#e9c9cf"></i></div>
+      <p id="dress">Красиво и по возможности не голые</p>
+      <div class="swatches" id="swatches" style="display: none;"></div>
     </section>
 
     <section class="info reveal" id="wishSec">
       <svg class="icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="12" y="26" width="40" height="28" rx="2"></rect><path d="M8 18h48v8H8zM32 18v36M32 18c-4-8-14-8-12-2 1 3 7 2 12 2zM32 18c4-8 14-8 12-2-1 3-7 2-12 2z"></path></svg>
       <h3>Пожелания</h3>
-      <p id="wishes">Лучший подарок — твоё присутствие. Если хочется что-то подарить — конверт или цветы 💐</p>
+      <p id="wishes">Лучший подарок — твоё присутствие. А так я позаботилась, и у меня есть вишлист</p>
+      <a class="btn" id="wishBtn" target="_blank" rel="noopener" style="display:none">Открыть вишлист →</a>
     </section>
 
     <section class="rsvp reveal">
       <h2>Ты придёшь?</h2>
-      <p id="rsvpText">Подтверди, пожалуйста, до 2 ноября</p>
+      <p id="rsvpText">Подтверди, пожалуйста, до 5 ноября</p>
       <div class="rsvp-btns">
-        <a class="btn" id="yesBtn" target="_blank" rel="noopener" href="https://t.me/So_fifii?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82!%20%D0%AF%20%D0%BF%D1%80%D0%B8%D0%B4%D1%83%20%D0%BD%D0%B0%20%D1%82%D0%B2%D0%BE%D0%B9%20%D0%B4%D0%B5%D0%BD%D1%8C%20%D1%80%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D1%8F%204%20%D0%BD%D0%BE%D1%8F%D0%B1%D1%80%D1%8F%20%F0%9F%A5%82">Приду 🥂</a>
+        <a class="btn" id="yesBtn" target="_blank" rel="noopener" href="https://t.me/So_fifii?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82!%20%D0%AF%20%D0%BF%D1%80%D0%B8%D0%B4%D1%83%20%D0%BD%D0%B0%20%D1%82%D0%B2%D0%BE%D0%B9%20%D0%B4%D0%B5%D0%BD%D1%8C%20%D1%80%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D1%8F%207%20%D0%BD%D0%BE%D1%8F%D0%B1%D1%80%D1%8F%20%F0%9F%A5%82">Приду 🥂</a>
         <a class="btn ghost" id="noBtn" target="_blank" rel="noopener" href="https://t.me/So_fifii?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82!%20%D0%9D%D0%B5%20%D1%81%D0%BC%D0%BE%D0%B3%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%20%F0%9F%98%A2">Не смогу 😢</a>
       </div>
       <p class="note">Откроется чат с Соней в Telegram с готовым ответом — останется нажать «Отправить»</p>
@@ -247,19 +260,21 @@ document.documentElement.className = "js";
 const CONFIG = {
   name: "Соня",                       // имя именинницы
   age: 18,                           // сколько исполняется (или null, чтобы скрыть)
-  date: "2026-11-04T19:00",          // дата и время начала по Москве (ГГГГ-ММ-ДДTЧЧ:ММ)
+  birthday: "2026-11-04",            // сам день рождения
+  date: "2026-11-07T14:15",          // дата и время начала по Москве (ГГГГ-ММ-ДДTЧЧ:ММ)
   message: "Приглашаю вас на свой день рождения! Ведь именно с вами мой праздник будет ярким, весёлым и запоминающимся. Отказы не принимаются, форс-мажоры не допускаются 😌 Жду вас без опозданий и с хорошим настроением ♥",
   timeline: [                        // программа вечера (можно удалить строки)
-    ["19:00", "Сбор гостей"],
-    ["19:30", "Ужин"],
-    ["21:00", "Торт и танцы"],
+    ["14:15", "Сбор гостей"],
+    ["20:45", "Игра"],
+    ["00:00", "Покатушки"],
   ],
-  place: "Название места",
-  address: "Москва, ул. Примерная, 1",
-  dressCode: "Total black — чёрный, можно с акцентами бордо",
-  dressColors: ["#111111", "#4d0b17", "#7a1426", "#e9c9cf"],
-  wishes: "Лучший подарок — твоё присутствие. Если хочется что-то подарить — конверт или цветы 💐",   // "" чтобы скрыть блок
-  rsvpBy: "2 ноября",               // до какого числа ответить
+  place: "ТЛПХ Дроздово 2",
+  address: "Вишнёвая улица, дом 41а",
+  dressCode: "Красиво и по возможности не голые",
+  dressColors: [],                   // цвета-кружочки, [] чтобы скрыть
+  wishes: "Лучший подарок — твоё присутствие. А так я позаботилась, и у меня есть вишлист",
+  wishlist: "",                      // ссылка на вишлист ("" — кнопка скрыта)   // "" чтобы скрыть блок
+  rsvpBy: "5 ноября",               // до какого числа ответить
   telegram: "So_fifii",              // ник в телеграме без @ (ответ придёт сюда)
 };
 /* ================================================================= */
@@ -269,6 +284,7 @@ const [, Y, Mo, Dd, Hh, Mi] = CONFIG.date.match(/(\d+)-(\d+)-(\d+)T(\d+):(\d+)/)
 const MON = Mo - 1;
 const START = Date.UTC(Y, MON, Dd, Hh - 3, Mi);           // время начала по Москве (UTC+3)
 const WDAY = new Date(Date.UTC(Y, MON, Dd)).getUTCDay();
+const [, BY, BM, BD] = CONFIG.birthday.match(/(\d+)-(\d+)-(\d+)/).map(Number);
 const MONTHS = ["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
 const MONTHS_G = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
 const WD = ["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"];
@@ -283,6 +299,8 @@ $("name").textContent = CONFIG.name;
 if (CONFIG.age) $("age").textContent = CONFIG.age; else $("ageWrap").style.display = "none";
 $("weekday").textContent = WD[WDAY];
 $("dayNum").textContent = Dd;
+$("bdLine").textContent = `исполняется ${BD} ${MONTHS_G[BM-1]}`;
+$("lgB").textContent = BD; $("lgP").textContent = Dd;
 $("monthYear").textContent = MONTHS_G[MON];
 $("dateYear").textContent = Y;
 $("timeLine").textContent = `начало в ${hhmm}`;
@@ -294,22 +312,24 @@ $("timeline").innerHTML = CONFIG.timeline.map(([t,s]) => `<div><b>${t}</b><span>
 if (!CONFIG.timeline.length && $("timeline")) $("timeline").remove();
 $("place").textContent = CONFIG.place;
 $("address").textContent = CONFIG.address;
-$("mapBtn").href = "https://yandex.ru/maps/?text=" + encodeURIComponent(CONFIG.address);
+$("mapBtn").href = "https://yandex.ru/maps/?text=" + encodeURIComponent(CONFIG.place + ", " + CONFIG.address);
 $("dress").textContent = CONFIG.dressCode;
 $("swatches").innerHTML = CONFIG.dressColors.map(c => `<i style="background:${c}"></i>`).join("");
+if (!CONFIG.dressColors.length) $("swatches").style.display = "none";
+if (CONFIG.wishlist){ $("wishBtn").href = CONFIG.wishlist; $("wishBtn").style.display = ""; }
 if (CONFIG.wishes) $("wishes").textContent = CONFIG.wishes; else if ($("wishSec")) $("wishSec").remove();
 $("rsvpText").textContent = `Подтверди, пожалуйста, до ${CONFIG.rsvpBy}`;
 $("foot").textContent = `с любовью, ${CONFIG.name}`;
 
 // calendar
 (function(){
-  const cal = $("cal"); if (cal.children.length) return; const y = Y, m = MON;
+  const cal = $("cal"); cal.innerHTML = ""; const y = Y, m = MON;
   ["пн","вт","ср","чт","пт","сб","вс"].forEach(h => cal.insertAdjacentHTML("beforeend", `<div class="h">${h}</div>`));
   const first = (new Date(y,m,1).getDay() + 6) % 7; const days = new Date(y,m+1,0).getDate();
   for (let i=0;i<first;i++) cal.insertAdjacentHTML("beforeend","<div></div>");
   for (let d=1; d<=days; d++){
     const wd = (first + d - 1) % 7; let c = "d";
-    if (wd>=5) c += " we"; if (d === Dd) c += " the";
+    if (wd>=5) c += " we"; if (d === Dd) c += " the"; else if (BM-1 === m && d === BD) c += " bd";
     cal.insertAdjacentHTML("beforeend", `<div class="${c}">${d}</div>`);
   }
 })();
